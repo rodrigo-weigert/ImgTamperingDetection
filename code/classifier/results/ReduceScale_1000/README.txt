@@ -1,6 +1,6 @@
 Scaling by a factor of 0.5  was applied to a random sample of 500 authentic images from the CASIA v2
 dataset, creating a dataset of 1000 images. This dataset was randomly split into 50% for training and 50% for testing.
-We obtained an accuracy of 80% on the testing set.
+We obtained an accuracy of 72% on the testing set.
 
 STEPS TO REPRODUCE THE RESULTS:
 
