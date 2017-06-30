@@ -12,8 +12,3 @@ test: perceptron.cpp perceptron.h test.cpp
 
 clear:
 	rm train test
-
-run:
-	./train $m $(eta) $(thre)
-	./test
-
