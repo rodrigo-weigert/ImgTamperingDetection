@@ -42,7 +42,10 @@ def countNeighbors(binImg):
 # Given a pixel from a binary image and the number
 # of pixels with value 1 in the 4-neighborhood of the pixel,
 # returns the measure alpha_j of the pixel.
-# For details on the alpha measure, see report.
+# alpha_1: 0 if pixel is 1, else the amount of pixels 0 in the neighborhood.
+# alpha_2: 0 if pixel is 1, else the amount of pixels 1 in the neighborhood.
+# alpha_3: 0 if pixel is 0, else the amount of pixels 0 in the neighborhood.
+# alpha_4: 0 if pixel is 0, else the amount of pixels 1 in the neighborhood.
 def pixel_alpha(pixel, neigh, j):
 	if j == 1:
 		if pixel == 0:
@@ -80,18 +83,20 @@ def alpha_vector(binImg):
 def co_occurance(alpha_v):
 	return np.float64(alpha_v) / np.float64(np.sum(alpha_v))
 
-#Ojala texture mesures
+# Ojala texture measures
 def ojala_score(binImg):
 	ofilter = np.array([[1, 2, 4],
 					[128, 0, 8],
 					[64, 32, 16] ], dtype=np.uint8)
 	return cv2.filter2D(binImg, -1, ofilter, borderType=cv2.BORDER_CONSTANT)
 
+# For calculating the normalized histogram of the ojala scores.
 def histogram(mat):
 	hist = np.bincount(mat.ravel(), minlength=256)
 	hist = np.maximum(hist, 1)
 	return hist/np.sum(hist)
 
+# Calculating correlations of a single binary image.
 def getIntraFeatures(binImg, alpha_v):
 	a, b, c, d = alpha_v / (binImg.shape[0] * binImg.shape[1])
 	m = [0] * 9
@@ -106,6 +111,7 @@ def getIntraFeatures(binImg, alpha_v):
 	m[8] = (b*c) / (a+b+c+d)**2
 	return m
 
+# Correlations between two binary images.
 def getInterFeatures(binImg1, binImg2, alpha_v1, alpha_v2):
 	dm = [0] * 8
 	p1 = co_occurance(alpha_v1)
@@ -126,6 +132,7 @@ def getInterFeatures(binImg1, binImg2, alpha_v1, alpha_v2):
 	
 	return dm
 
+# Returns all the 102 features used by Bayram.
 def getFeatures(img):	
 	img_r = getChannel(img, 'R')
 	img_b = getChannel(img, 'B')
