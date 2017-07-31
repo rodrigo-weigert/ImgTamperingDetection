@@ -1,0 +1,15 @@
+#!/bin/bash
+yes=0
+no=0
+for i in `ls $1`
+do
+	result=`./run $1/$i`
+	echo "$i --> $result"
+	if [ ${result:0:1} = "N" ]
+	then
+		no=$((no + 1))
+	else
+		yes=$((yes + 1))
+	fi
+	echo YES: $yes, NO: $no
+done
